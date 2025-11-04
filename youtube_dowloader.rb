@@ -15,7 +15,7 @@ def download_video(url, format)
   end
 end
 
-puts "🎬 Entrez le lien de la vidéo YouTube :"
+puts " Entrez le lien de la vidéo YouTube :"
 print "> "
 url = gets.chomp
 
@@ -27,4 +27,4 @@ choice = gets.chomp
 
 download_video(url, choice)
 
-puts "\n✅ Téléchargement terminé !"
+puts "\n Téléchargement terminé !"
