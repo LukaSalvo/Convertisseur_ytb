@@ -1,30 +1,42 @@
 #!/usr/bin/env ruby
 
-require 'open3'
+require 'fileutils'
 
-def download_video(url, format)
-  case format
-  when '1'
-    puts " Téléchargement de la vidéo en MP4..."
-    system("yt-dlp -f mp4 \"#{url}\"")
-  when '2'
-    puts " Téléchargement de l'audio en MP3..."
-    system("yt-dlp -x --audio-format mp3 \"#{url}\"")
-  else
-    puts " Option invalide. Veuillez choisir 1 ou 2."
-  end
+unless system("which yt-dlp > /dev/null")
+  puts " yt-dlp n'est pas installé."
+  puts "   Installe-le avec : brew install yt-dlp  # sur macOS / Linux avec Homebrew"
+  exit
 end
+
+
+download_dir = File.expand_path("~/Téléchargements/YouTube")
+FileUtils.mkdir_p(download_dir)
+
 
 puts " Entrez le lien de la vidéo YouTube :"
 print "> "
 url = gets.chomp
 
-puts "\n Choisissez le format de téléchargement :"
-puts "1. Vidéo (MP4)"
-puts "2. Audio (MP3)"
-print "> "
-choice = gets.chomp
 
-download_video(url, choice)
+choice = nil
+loop do
+  puts "\nChoisissez le format de téléchargement :"
+  puts "1. Vidéo (MP4)"
+  puts "2. Audio (MP3)"
+  print "> "
+  choice = gets.chomp
+  break if ['1','2'].include?(choice)
+  puts " Option invalide, choisissez 1 ou 2."
+end
 
-puts "\n Téléchargement terminé !"
+
+case choice
+when '1'
+  puts "\nTéléchargement de la vidéo en MP4..."
+  system("yt-dlp -f mp4 -o '#{download_dir}/%(title)s.%(ext)s' \"#{url}\"")
+when '2'
+  puts "\nTéléchargement de l'audio en MP3..."
+  system("yt-dlp -x --audio-format mp3 -o '#{download_dir}/%(title)s.%(ext)s' \"#{url}\"")
+end
+
+puts "\n Téléchargement terminé ! Les fichiers sont dans #{download_dir}"
