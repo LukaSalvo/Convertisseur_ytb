@@ -4,7 +4,8 @@ require 'fileutils'
 
 unless system("which yt-dlp > /dev/null")
   puts " yt-dlp n'est pas installé."
-  puts "   Installe-le avec : brew install yt-dlp  # sur macOS / Linux avec Homebrew"
+  puts "   Installe-le avec : brew install yt-dlp  # sur macOS avec Homebrew"
+  pûts " Si linux, installe le avec sudo apt install yt-dlp"
   exit
 end
 
